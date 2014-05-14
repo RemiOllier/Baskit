@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Bask\'it</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_supprimer">Supprimer</string>
+    <string name="title_activity_display_list">DisplayList</string>
+
+    <string name="bouton_creer">Créer</string>
+    <string name="bouton_cancel">Annuler</string>
+
+</resources>
