@@ -133,7 +133,7 @@ public class BaskitDB {
         // On n'ajoute pas l'id, SQLite s'en occupe de lui-même
         values.put(P_COL_NOM_PRODUIT, produit.getNom_produit());
         values.put(P_COL_ID_LISTE, String.valueOf(id_liste));
-
+        // Test
         return bdd.insert(TABLE_PRODUITS, null, values);
     }
 
