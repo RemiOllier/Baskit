@@ -40,6 +40,9 @@ public class BaskitDB {
     private static final String P_COL_ID_LISTE = "ID_LISTE";
     private static final int P_NUM_COL_ID_LISTE = 2;
 
+    private static final String P_COL_IS_CHECKED = "IS_CHECKED";
+    private static final int P_NUM_COL_IS_CHECKED = 3;
+
     private SQLiteDatabase bdd;
 
     private maBaseSQLite maBase;
@@ -67,7 +70,24 @@ public class BaskitDB {
         return bdd.insert(TABLE_LISTE, null, values);
     }
 
-    public int deleteListe(int id) { return bdd.delete(TABLE_LISTE, L_COL_ID_LISTE + " = " + id, null); }
+    // Lors de la suppression d'une liste
+    // Supprimer également les produits contenus dans cette liste
+    public void deleteListe(int id) {
+        deleteProduitsWithList(id);
+
+        Cursor c2 = bdd.rawQuery("DELETE FROM " + TABLE_LISTE + " WHERE " + L_COL_ID_LISTE + " = " + id, null);
+        c2.moveToFirst();
+        while(!c2.isAfterLast()) { c2.moveToNext(); }
+        c2.close();
+        //return bdd.delete(TABLE_LISTE, L_COL_ID_LISTE + " = " + id, null);
+    }
+
+    public void deleteProduitsWithList(int id_liste) {
+        Cursor c = bdd.rawQuery("DELETE FROM " + TABLE_PRODUITS + " WHERE " + P_COL_ID_LISTE + " = " + id_liste, null);
+        c.moveToFirst();
+        while(!c.isAfterLast()) { c.moveToNext(); }
+        c.close();
+    }
 
     public long updateListe(int id, Liste liste)
     {
@@ -127,22 +147,45 @@ public class BaskitDB {
      *   Opérations sur la table TABLE_PRODUITS
      *
      */
+
     public long insertProduit(Produits produit, int id_liste)
     {
         ContentValues values = new ContentValues();
         // On n'ajoute pas l'id, SQLite s'en occupe de lui-même
         values.put(P_COL_NOM_PRODUIT, produit.getNom_produit());
         values.put(P_COL_ID_LISTE, String.valueOf(id_liste));
-        // Test
+        values.put(P_COL_IS_CHECKED, false);
         return bdd.insert(TABLE_PRODUITS, null, values);
     }
 
     public int deleteProduit(int id) { return bdd.delete(TABLE_PRODUITS, P_COL_ID_PRODUIT + " = " + id, null); }
 
-    public List<Produits> getProduits()
+    public void checkProduit(int id_liste, int id_prod) {
+
+        Cursor c = bdd.rawQuery("UPDATE " + TABLE_PRODUITS + " SET " + P_COL_IS_CHECKED + " = 1 " +
+                                " WHERE " + P_COL_ID_LISTE + " = " + id_liste +
+                                " AND " + P_COL_ID_PRODUIT + " = " + id_prod, null);
+        c.moveToFirst();
+        while(!c.isAfterLast()) { c.moveToNext(); }
+        c.close();
+
+    }
+
+    public void uncheckProduit(int id_liste, int id_prod) {
+
+        Cursor c = bdd.rawQuery("UPDATE " + TABLE_PRODUITS + " SET " + P_COL_IS_CHECKED + " = 0 " +
+                " WHERE " + P_COL_ID_LISTE + " = " + id_liste +
+                " AND " + P_COL_ID_PRODUIT + " = " + id_prod, null);
+        c.moveToFirst();
+        while(!c.isAfterLast()) { c.moveToNext(); }
+        c.close();
+
+    }
+
+    public List<Produits> getProduitsWithIdListe(int id_liste)
     {
-        Cursor c = bdd.query(TABLE_PRODUITS, new String[] {P_COL_ID_PRODUIT, P_COL_NOM_PRODUIT, P_COL_ID_LISTE}
-                , null, null, null, null, null);
+
+        Cursor c = this.bdd.rawQuery("SELECT * FROM " + TABLE_PRODUITS + " WHERE " + P_COL_ID_LISTE + " = " + id_liste, null);
         c.moveToFirst();
         List<Produits> listeProduits = new LinkedList<Produits>();
         while(!c.isAfterLast())
@@ -150,7 +193,8 @@ public class BaskitDB {
             Produits produit = new Produits();
             produit.setId_produit(c.getInt(P_NUM_COL_ID_PRODUIT));
             produit.setNom_produit(c.getString(P_NUM_COL_NOM_PRODUIT));
-            produit.setId_produit(c.getInt(P_NUM_COL_ID_LISTE));
+            produit.setId_liste(c.getInt(P_NUM_COL_ID_LISTE));
+            produit.setisChecked(c.getShort(P_NUM_COL_IS_CHECKED));
             listeProduits.add(produit);
             c.moveToNext();
         }
@@ -175,5 +219,4 @@ public class BaskitDB {
 
         return produits;
     }
-
 }

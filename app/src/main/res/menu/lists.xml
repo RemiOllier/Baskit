@@ -8,6 +8,11 @@
         android:orderInCategory="100"
         app:showAsAction="never" />
 
+    <item android:id="@+id/action_quitter"
+        android:title="@string/action_quitter"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
     <item android:id="@+id/action_ajout"
         android:icon="@drawable/ic_action_new"
         android:showAsAction="ifRoom|withText"

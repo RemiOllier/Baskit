@@ -33,8 +33,6 @@ public class ListsActivity extends ListActivity {
         setContentView(R.layout.activity_lists);
 
         Bundle extra = getIntent().getExtras();
-
-        //ListView lv = (ListView) findViewById(R.id.list_item);
         registerForContextMenu(getListView());
 
         BaskitDB listesBD = new BaskitDB(this);
@@ -42,11 +40,6 @@ public class ListsActivity extends ListActivity {
 
         List<Liste> listAllLists = new LinkedList<Liste>();
         listAllLists = listesBD.getListe();
-        /*for (Liste vListes : listAllLists)
-        {
-            Log.d("Test noms listes", vListes.getNom_liste());
-
-        }*/
 
         // Création de la ArrayList qui nous permettra de remplir la listView
         ArrayList<HashMap<String, String>> listItem = new ArrayList<HashMap<String, String>>();
@@ -68,10 +61,6 @@ public class ListsActivity extends ListActivity {
 
     }
 
-     /*
-        TODO : Créer le layout de chaque liste : menu_each_list.xml
-     */
-
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         HashMap<String, String> item = (HashMap<String, String>) getListAdapter().getItem(position);
@@ -79,46 +68,11 @@ public class ListsActivity extends ListActivity {
         Intent i = new Intent(this, DisplayList.class);
         i.putExtra("id", item.get("id"));
         startActivity(i);
-        //finish();
+        finish();
     }
-/*
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        menu.setHeaderTitle("Menu");
-        menu.add(Menu.NONE, MENU_SUPPRIMER, Menu.NONE, "Supprimer la liste");
-
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch(item.getItemId()) {
-            case MENU_SUPPRIMER:
-
-                Bundle extra = getIntent().getExtras();
-                //int id_liste = Integer.parseInt(extra.getString("id"));
-
-                Toast.makeText(this, "TODO: Supprimer la liste : " + info.position, Toast.LENGTH_LONG).show();
-
-
-                BaskitDB listesBD = new BaskitDB(this);
-                listesBD.open();
-               // listesBD.deleteListe(info.position);
-                listesBD.close();
-
-                this.onResume();
-
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }*/
 
     @Override
     protected void onResume() {
-
         super.onResume();
         this.onCreate(null);
     }
@@ -167,7 +121,7 @@ public class ListsActivity extends ListActivity {
 
             alert.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-                    // Canceled.
+                    // Cancelled
                 }
             });
 
@@ -175,7 +129,50 @@ public class ListsActivity extends ListActivity {
 
             return true;
         }
+
+        if(id == R.id.action_quitter)
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Quitter l'application ?");
+
+            alert.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    finish();
+                }
+            });
+
+            alert.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                }
+            });
+
+            alert.show();
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    // Lors de l'appui sur la touche retour
+    // On crée un dialog de confirmation
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Quitter l'application ?");
+
+        alert.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                finish();
+            }
+        });
+
+        alert.setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+            }
+        });
+
+        alert.show();
     }
 
     public static String getCurrentTimeStamp() {

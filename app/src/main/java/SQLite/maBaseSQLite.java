@@ -22,10 +22,12 @@ public class maBaseSQLite extends SQLiteOpenHelper {
     private static final String TABLE_PRODUITS = "table_produits";
     private static final String COL_ID_PRODUIT = "ID_PRODUIT";
     private static final String COL_NOM_PRODUIT = "NOM_PRODUIT";
+    private static final String COL_IS_CHECKED = "IS_CHECKED";
 
     private static final String CREATE_TABLE_PRODUITS = "CREATE TABLE " + TABLE_PRODUITS + " ("
             + COL_ID_PRODUIT + " INTEGER PRIMARY KEY ASC, " + COL_NOM_PRODUIT + " TEXT NOT NULL, "
-            + COL_ID_LISTE + " TEXT NOT NULL);";
+            + COL_ID_LISTE + " TEXT NOT NULL, " + COL_IS_CHECKED + " SHORT INTEGER "
+            + COL_IS_CHECKED + " IS_CHECKED);";
 
     public maBaseSQLite(Context context, String name, CursorFactory factory, int version)
     {

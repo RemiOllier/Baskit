@@ -29,7 +29,7 @@ public class Liste {
      *  Get / Set id_liste
      */
 
-    public int getId_liste() { return id_liste; }
+    public int getId_liste() { return this.id_liste; }
 
     public void setId_liste(int id) { this.id_liste = id; }
 
@@ -37,7 +37,7 @@ public class Liste {
      *  Get / Set nom_liste
      */
 
-    public String getNom_liste() { return nom_liste; }
+    public String getNom_liste() { return this.nom_liste; }
 
     public void setNom_liste(String nom) { this.nom_liste = nom; }
 
@@ -45,7 +45,7 @@ public class Liste {
      *  Get / Set date_creation
      */
 
-    public String getDate_creation() { return date_creation; }
+    public String getDate_creation() { return this.date_creation; }
 
     public void setDate_creation(String date_creation) { this.date_creation = date_creation; }
 
