@@ -14,4 +14,13 @@
         android:fastScrollEnabled="true">
     </ListView>
 
+    <TextView
+        android:id="@+id/no_product"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="Il n'y a aucun produit pour le moment."
+        android:visibility="gone"/>
+
 </RelativeLayout>

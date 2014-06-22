@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,21 +43,28 @@ public class ListsActivity extends ListActivity {
         List<Liste> listAllLists = new LinkedList<Liste>();
         listAllLists = listesBD.getListe();
 
-        // Création de la ArrayList qui nous permettra de remplir la listView
-        ArrayList<HashMap<String, String>> listItem = new ArrayList<HashMap<String, String>>();
+        if(listesBD.countListes() > 0) {
+            // Création de la ArrayList qui nous permettra de remplir la listView
+            ArrayList<HashMap<String, String>> listItem = new ArrayList<HashMap<String, String>>();
 
-        // On déclare la HashMap qui contiendra les informations pour un item
-        HashMap<String, String> map;
+            // On déclare la HashMap qui contiendra les informations pour un item
+            HashMap<String, String> map;
 
-        for(int i = 0 ; i < listAllLists.size() ; i++) {
-            map = new HashMap<String, String>();
-            map.put("nom", listAllLists.get(i).getNom_liste());
-            map.put("date", String.valueOf(listAllLists.get(i).getDate_creation()));
-            map.put("id", String.valueOf(listAllLists.get(i).getId_liste()));
-            listItem.add(map);
+            for (int i = 0; i < listAllLists.size(); i++) {
+                map = new HashMap<String, String>();
+                map.put("nom", listAllLists.get(i).getNom_liste());
+                map.put("date", String.valueOf(listAllLists.get(i).getDate_creation()));
+                map.put("id", String.valueOf(listAllLists.get(i).getId_liste()));
+                listItem.add(map);
+            }
+            ListeAdapter adapter = new ListeAdapter(this, listItem);
+            setListAdapter(adapter);
         }
-        ListeAdapter adapter = new ListeAdapter(this, listItem);
-        setListAdapter(adapter);
+        else
+        {
+            TextView tv_no_list = (TextView) findViewById(R.id.no_list);
+            tv_no_list.setVisibility(View.VISIBLE);
+        }
 
         listesBD.close();
 
@@ -64,7 +73,6 @@ public class ListsActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         HashMap<String, String> item = (HashMap<String, String>) getListAdapter().getItem(position);
-        //Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
         Intent i = new Intent(this, DisplayList.class);
         i.putExtra("id", item.get("id"));
         startActivity(i);
@@ -105,17 +113,24 @@ public class ListsActivity extends ListActivity {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     String nom_nouvelleListe = String.valueOf(input.getText());
 
-                    //Toast.makeText(getApplicationContext(), "Valeur : " + nom_nouvelleListe, Toast.LENGTH_LONG).show();
-                    BaskitDB listesDB = new BaskitDB(getApplicationContext());
-                    listesDB.open();
-                    Liste nouvelleListe = new Liste();
-                    nouvelleListe.setNom_liste(nom_nouvelleListe);
-                    nouvelleListe.setDate_creation(getCurrentTimeStamp());
-                    listesDB.insertListe(nouvelleListe);
-                    listesDB.close();
+                    if(nom_nouvelleListe.length() > 0) {
+                        BaskitDB listesDB = new BaskitDB(getApplicationContext());
+                        listesDB.open();
+                        Liste nouvelleListe = new Liste();
+                        nouvelleListe.setNom_liste(nom_nouvelleListe);
+                        nouvelleListe.setDate_creation(getCurrentTimeStamp());
+                        listesDB.insertListe(nouvelleListe);
+                        listesDB.close();
 
-                    finish();
-                    startActivity(getIntent());
+
+                        finish();
+                        startActivity(getIntent());
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "Veuillez saisir un titre pour la liste", Toast.LENGTH_LONG).show();
+
+                    }
                 }
             });
 
@@ -189,9 +204,3 @@ public class ListsActivity extends ListActivity {
         }
     }
 }
-
-
-/*
-        Toast.makeText(this, listesBD.getListe(1).getNom_liste(), Toast.LENGTH_LONG).show();
-
- */

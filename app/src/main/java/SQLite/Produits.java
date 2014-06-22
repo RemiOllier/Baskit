@@ -8,7 +8,7 @@ public class Produits {
     private int id_produit;
     private int id_liste;
     private String nom_produit;
-    private short isChecked = 0;
+    //private short isChecked = 0;
 
 
     /*
@@ -51,12 +51,12 @@ public class Produits {
 
     /*
      *  Get / Set isChecked
-     */
+
 
     public short getisChecked() { return this.isChecked; }
 
     public void setisChecked(short isChecked) { this.isChecked = isChecked; }
 
     public void unsetIsChecked(short isChecked) { this.isChecked = 0; }
-
+    */
 }

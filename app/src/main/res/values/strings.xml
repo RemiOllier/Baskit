@@ -4,7 +4,8 @@
     <string name="app_name">Bask\'it</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="action_supprimer">Supprimer</string>
+    <string name="action_renommer_liste">Renommer la liste</string>
+    <string name="action_supprimer">Supprimer la liste</string>
     <string name="action_quitter">Quitter</string>
     <string name="title_activity_display_list">DisplayList</string>
 

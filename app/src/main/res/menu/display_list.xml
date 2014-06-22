@@ -3,6 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.copiercoller.baskit.app.DisplayList" >
 
+    <item
+        android:id="@+id/action_renommer_liste"
+        android:title="@string/action_renommer_liste"
+        android:orderInCategory="99"
+        app:showAsAction="ifRoom|withText" />
+
     <item android:id="@+id/action_supprimer"
         android:title="@string/action_supprimer"
         android:orderInCategory="100"

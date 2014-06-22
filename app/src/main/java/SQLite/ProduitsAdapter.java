@@ -57,8 +57,6 @@ public class ProduitsAdapter extends ArrayAdapter<HashMap<String, String>> {
             holder.textView_nom_produit = (TextView) view.findViewById(R.id.tv_label_produit);
             holder.textView_id_produit = (TextView) view.findViewById(R.id.tv_id_produit);
 
-            //holder.checkbox_produit = (CheckBox) view.findViewById(R.id.checkbox_produit);
-
             view.setTag(holder);
 
         } else {
@@ -71,15 +69,11 @@ public class ProduitsAdapter extends ArrayAdapter<HashMap<String, String>> {
         if (currentData != null) {
             holder.textView_nom_produit.setText(currentData.get("nom_produit"));
             holder.textView_id_produit.setText(currentData.get("tv_id_produit"));
-
-            //holder.checkbox_produit.setText(currentData.get("checkbox_produit"));
-            //holder.textView_p_id_liste.setText(currentData.get("id_liste"));
         }
 
         return view;
     }
 
-    /** View holder for the views we need access to */
     private static class Holder {
 
         public TextView textView_nom_produit;
